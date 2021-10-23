@@ -475,6 +475,10 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case TD(TD_FUN_DEL):
             return 200;
 
+        // Semicolon / Quote Key
+        case TD(TD_SCOL_QUOT):
+            return 200;
+
         default:
             return TAPPING_TERM;  // 300
     }
