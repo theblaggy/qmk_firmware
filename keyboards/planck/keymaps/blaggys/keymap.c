@@ -39,7 +39,8 @@ enum {
   TD_CBR,
   TD_PRN,
   TD_NUM_BSPC,
-  TD_FUN_DEL
+  TD_FUN_DEL,
+  TD_SCOL_QUOT
 };
 
 // Tap Dance states
@@ -47,7 +48,8 @@ typedef enum {
     TD_UNKNOWN,
     TD_SINGLE_TAP,
     TD_DOUBLE_TAP,
-    TD_SINGLE_HOLD
+    TD_SINGLE_HOLD,
+    TD_DOUBLE_HOLD
 } td_state_t;
 
 // Global instance of the tapdance state type
@@ -57,18 +59,20 @@ static td_state_t td_state;
 td_state_t cur_dance(qk_tap_dance_state_t *state);
 
 // `finished` and `reset` functions for each tapdance keycode
-void td_bspc_finished(qk_tap_dance_state_t *state, void *user_data);
-void td_bspc_reset   (qk_tap_dance_state_t *state, void *user_data);
-void td_del_finished (qk_tap_dance_state_t *state, void *user_data);
-void td_del_reset    (qk_tap_dance_state_t *state, void *user_data);
+void td_bspc_finished     (qk_tap_dance_state_t *state, void *user_data);
+void td_bspc_reset        (qk_tap_dance_state_t *state, void *user_data);
+void td_del_finished      (qk_tap_dance_state_t *state, void *user_data);
+void td_del_reset         (qk_tap_dance_state_t *state, void *user_data);
+void td_scln_quot_finished(qk_tap_dance_state_t *state, void *user_data);
 
 // Tap Dance definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
   [TD_BRC] = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, KC_RBRC),
   [TD_CBR] = ACTION_TAP_DANCE_DOUBLE(KC_LCBR, KC_RCBR),
   [TD_PRN] = ACTION_TAP_DANCE_DOUBLE(KC_LPRN, KC_RPRN),
-  [TD_NUM_BSPC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_bspc_finished, td_bspc_reset),
-  [TD_FUN_DEL]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_del_finished,  td_del_reset)
+  [TD_NUM_BSPC]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_bspc_finished, td_bspc_reset),
+  [TD_FUN_DEL]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_del_finished,  td_del_reset),
+  [TD_SCOL_QUOT] = ACTION_TAP_DANCE_FN(td_scln_quot_finished)
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -111,7 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Colemak
  * ,-----------------------------------------------------------------------------------.
- * |      |   Q  |   W  |   F  |   P  |   B  |   J  |   L  |   U  |   Y  |   ;  |  "   |
+ * |      |   Q  |   W  |   F  |   P  |   B  |   J  |   L  |   U  |   Y  |  ; ' |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |   A  |   R  |   S  |   T  |   G  |   M  |   N  |   E  |   I  |   O  | Vol+ |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -121,10 +125,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_COLEMAK] = LAYOUT_ortho_4x12(
-    XXXXXXX, KC_Q,         KC_W,         KC_F,         KC_P,         KC_B,    KC_J,    KC_L,         KC_U,         KC_Y,           KC_SCLN,      KC_QUOT,
-    XXXXXXX, LCTL_T(KC_A), LALT_T(KC_R), LGUI_T(KC_S), LSFT_T(KC_T), KC_G,    KC_M,    RSFT_T(KC_N), RGUI_T(KC_E), LALT_T(KC_I),   RCTL_T(KC_O), KC_VOLU,
-    XXXXXXX, KC_Z,         RALT_T(KC_X), KC_C,         KC_D,         KC_V,    KC_K,    KC_H,         KC_COMM,      RALT_T(KC_DOT), KC_SLSH,      KC_VOLD,
-    _______, _______,      _______,      _______,      _______,      _______, _______, _______,      _______,      _______,        _______,      _______
+    XXXXXXX, KC_Q,         KC_W,         KC_F,         KC_P,         KC_B,    KC_J,    KC_L,         KC_U,         KC_Y,           TD(TD_SCOL_QUOT), XXXXXXX,
+    XXXXXXX, LCTL_T(KC_A), LALT_T(KC_R), LGUI_T(KC_S), LSFT_T(KC_T), KC_G,    KC_M,    RSFT_T(KC_N), RGUI_T(KC_E), LALT_T(KC_I),   RCTL_T(KC_O),     KC_VOLU,
+    XXXXXXX, KC_Z,         RALT_T(KC_X), KC_C,         KC_D,         KC_V,    KC_K,    KC_H,         KC_COMM,      RALT_T(KC_DOT), KC_SLSH,          KC_VOLD,
+    _______, _______,      _______,      _______,      _______,      _______, _______, _______,      _______,      _______,        _______,          _______
 ),
 
 /* Dvorak
@@ -508,7 +512,10 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
         if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
         else return TD_SINGLE_HOLD;
     }
-    if (state->count == 2) return TD_DOUBLE_TAP;
+    if (state->count == 2) {
+        if (state->interrupted || !state->pressed) return TD_DOUBLE_TAP;
+        else return TD_DOUBLE_HOLD;
+    }
     else return TD_UNKNOWN;
 }
 
@@ -518,7 +525,10 @@ td_state_t cur_dance_hold(qk_tap_dance_state_t *state) {
         if (!state->pressed) return TD_SINGLE_TAP;
         else return TD_SINGLE_HOLD;
     }
-    if (state->count == 2) return TD_DOUBLE_TAP;
+    if (state->count == 2) {
+        if (!state->pressed) return TD_DOUBLE_TAP;
+        else return TD_DOUBLE_HOLD;
+    }
     else return TD_UNKNOWN;
 }
 
@@ -538,6 +548,7 @@ void td_bspc_finished(qk_tap_dance_state_t *state, void *user_data) {
         case TD_SINGLE_HOLD:
             layer_on(_NUM);
             break;
+        case TD_DOUBLE_HOLD:
         case TD_UNKNOWN:
             break;
     }
@@ -569,6 +580,7 @@ void td_del_finished(qk_tap_dance_state_t *state, void *user_data) {
         case TD_SINGLE_HOLD:
             layer_on(_FUN);
             break;
+        case TD_DOUBLE_HOLD:
         case TD_UNKNOWN:
             break;
     }
@@ -580,6 +592,26 @@ void td_del_reset(qk_tap_dance_state_t *state, void *user_data) {
             layer_off(_FUN);
             break;
         default:
+            break;
+    }
+}
+
+void td_scln_quot_finished(qk_tap_dance_state_t *state, void *user_data) {
+    td_state = cur_dance(state);
+    switch (td_state) {
+        case TD_SINGLE_TAP:
+            tap_code(KC_SCLN);
+            break;
+        case TD_SINGLE_HOLD:
+            tap_code16(KC_COLN);
+            break;
+        case TD_DOUBLE_TAP:
+            tap_code(KC_QUOT);
+            break;
+        case TD_DOUBLE_HOLD:
+            tap_code16(KC_DQUO);
+            break;
+        case TD_UNKNOWN:
             break;
     }
 }
