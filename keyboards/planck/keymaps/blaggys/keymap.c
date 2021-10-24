@@ -475,7 +475,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case LT(_SYM,KC_ENT):
         case TD(TD_NUM_BSPC):
         case TD(TD_FUN_DEL):
-            return 200;
+            return 250;
 
         // Lower Tapping Term for ; and ' on u and y key
         case TD(TD_SCLN):
