@@ -386,7 +386,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_MRWD:
       if (record->event.pressed) {
         if (keymap_config.swap_lctl_lgui) {  // Windows/Linux
-          register_code1(KC_MPRV);
+          register_code16(KC_MPRV);
         } else {  // macOS
           register_code16(KC_MRWD);
         }
@@ -394,7 +394,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (keymap_config.swap_lctl_lgui) {  // Windows/Linux
           unregister_code16(KC_MPRV);
         } else {  // macOS
-          unregister_code16(KC_MWRD);
+          unregister_code16(KC_MRWD);
         }
       }
       return false;
@@ -402,7 +402,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_MFFD:
       if (record->event.pressed) {
         if (keymap_config.swap_lctl_lgui) {  // Windows/Linux
-          register_code1(KC_MNXT);
+          register_code16(KC_MNXT);
         } else {  // macOS
           register_code16(KC_MFFD);
         }
