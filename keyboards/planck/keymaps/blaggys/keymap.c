@@ -466,7 +466,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         // Homerow Shifts
         case LSFT_T(KC_T):
         case RSFT_T(KC_N):
-            return 225;
+            return 250;
 
         // Thumb keys
         case LT(_MEDIA,KC_ESC):
