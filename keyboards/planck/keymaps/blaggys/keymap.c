@@ -189,7 +189,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Media
  * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      | Prvs | Play | Next |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      | Ctrl | Alt  | GUI  |Shift |      |      |Rewind| Play |Forwrd|      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -199,7 +199,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_MEDIA] = LAYOUT_ortho_4x12(
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,      XXXXXXX, XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
     XXXXXXX, KC_LCTL, KC_LALT, KC_LGUI,      KC_LSFT, XXXXXXX, XXXXXXX, KC_MRWD, KC_MPLY, KC_MFFD, XXXXXXX, XXXXXXX,
     XXXXXXX, XXXXXXX, KC_RALT, XXXXXXX,      XXXXXXX, XXXXXXX, XXXXXXX, KC_MUTE, KC_VOLD, KC_VOLU, XXXXXXX, XXXXXXX,
     XXXXXXX, XXXXXXX, XXXXXXX, LT(6,KC_ESC), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
@@ -380,6 +380,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           PLAY_SONG(plover_gb_song);
         #endif
         layer_off(_PLOVER);
+      }
+      return false;
+      break;
+    case KC_MRWD:
+      if (record->event.pressed) {
+        if (keymap_config.swap_lctl_lgui) {  // Windows/Linux
+          register_code1(KC_MPRV);
+        } else {  // macOS
+          register_code16(KC_MRWD);
+        }
+      } else {
+        if (keymap_config.swap_lctl_lgui) {  // Windows/Linux
+          unregister_code16(KC_MPRV);
+        } else {  // macOS
+          unregister_code16(KC_MWRD);
+        }
+      }
+      return false;
+      break;
+    case KC_MFFD:
+      if (record->event.pressed) {
+        if (keymap_config.swap_lctl_lgui) {  // Windows/Linux
+          register_code1(KC_MNXT);
+        } else {  // macOS
+          register_code16(KC_MFFD);
+        }
+      } else {
+        if (keymap_config.swap_lctl_lgui) {  // Windows/Linux
+          unregister_code16(KC_MNXT);
+        } else {  // macOS
+          unregister_code16(KC_MFFD);
+        }
       }
       return false;
       break;
