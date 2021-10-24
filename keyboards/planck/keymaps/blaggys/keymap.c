@@ -480,7 +480,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         // Lower Tapping Term for ; and ' on u and y key
         case TD(TD_SCLN):
         case TD(TD_QUOT):
-            return 200;
+            return 250;
 
         default:
             return TAPPING_TERM;  // 300
