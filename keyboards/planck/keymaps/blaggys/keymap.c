@@ -39,9 +39,7 @@ enum {
   TD_CBR,
   TD_PRN,
   TD_NUM_BSPC,
-  TD_FUN_DEL,
-  TD_SCLN,
-  TD_QUOT
+  TD_FUN_DEL
 };
 
 // Tap Dance states
@@ -49,7 +47,6 @@ typedef enum {
     TD_UNKNOWN,
     TD_SINGLE_TAP,
     TD_DOUBLE_TAP,
-    TD_TRIPPLE_TAP,
     TD_SINGLE_HOLD
 } td_state_t;
 
@@ -64,8 +61,6 @@ void td_bspc_finished(qk_tap_dance_state_t *state, void *user_data);
 void td_bspc_reset   (qk_tap_dance_state_t *state, void *user_data);
 void td_del_finished (qk_tap_dance_state_t *state, void *user_data);
 void td_del_reset    (qk_tap_dance_state_t *state, void *user_data);
-void td_scln_finished(qk_tap_dance_state_t *state, void *user_data);
-void td_quot_finished(qk_tap_dance_state_t *state, void *user_data);
 
 // Tap Dance definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
@@ -73,9 +68,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
   [TD_CBR] = ACTION_TAP_DANCE_DOUBLE(KC_LCBR, KC_RCBR),
   [TD_PRN] = ACTION_TAP_DANCE_DOUBLE(KC_LPRN, KC_RPRN),
   [TD_NUM_BSPC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_bspc_finished, td_bspc_reset),
-  [TD_FUN_DEL]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_del_finished,  td_del_reset),
-  [TD_SCLN]  = ACTION_TAP_DANCE_FN(td_scln_finished),
-  [TD_QUOT]  = ACTION_TAP_DANCE_FN(td_quot_finished)
+  [TD_FUN_DEL]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_del_finished,  td_del_reset)
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -118,7 +111,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Colemak
  * ,-----------------------------------------------------------------------------------.
- * |      |   Q  |   W  |   F  |   P  |   B  |   J  |   L  |   U  |   Y  |   ;  |  "   |
+ * |      |   Q  |   W  |   F  |   P  |   B  |   J  |   L  |   U  |   Y  |   '  |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |   A  |   R  |   S  |   T  |   G  |   M  |   N  |   E  |   I  |   O  | Vol+ |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -128,9 +121,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_COLEMAK] = LAYOUT_ortho_4x12(
-    XXXXXXX, KC_Q,         KC_W,         KC_F,         KC_P,         KC_B,    KC_J,    KC_L,         KC_U,         KC_Y,           XXXXXXX,      XXXXXXX,
+    XXXXXXX, KC_Q,         KC_W,         KC_F,         KC_P,         KC_B,    KC_J,    KC_L,         KC_U,         KC_Y,           KC_QUOT,      XXXXXXX,
     XXXXXXX, LCTL_T(KC_A), LALT_T(KC_R), LGUI_T(KC_S), LSFT_T(KC_T), KC_G,    KC_M,    RSFT_T(KC_N), RGUI_T(KC_E), LALT_T(KC_I),   RCTL_T(KC_O), KC_VOLU,
-    XXXXXXX, KC_Z,         RALT_T(KC_X), KC_C,         KC_D,         KC_V,    KC_K,    KC_H,         TD(TD_SCLN),  TD(TD_QUOT),    KC_SLSH,      KC_VOLD,
+    XXXXXXX, KC_Z,         RALT_T(KC_X), KC_C,         KC_D,         KC_V,    KC_K,    KC_H,         KC_COMM,      RALT_T(KC_DOT), KC_SLSH,      KC_VOLD,
     _______, _______,      _______,      _______,      _______,      _______, _______, _______,      _______,      _______,        _______,      _______
 ),
 
@@ -210,17 +203,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |      |   7  |   8  |   9  |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |   0  |   4  |   5  |   6  |      |      |Shift | GUI  | Alt  | Ctrl |      |
+ * |      |   ;  |   4  |   5  |   6  |      |      |Shift | GUI  | Alt  | Ctrl |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |   1  |   2  |   3  |      |      |      |      | RAlt |      |      |
+ * |      |   0  |   1  |   2  |   3  |      |      |      |      | RAlt |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |MO(11)|      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_NUM] = LAYOUT_ortho_4x12(
     XXXXXXX, XXXXXXX, KC_7,    KC_8,    KC_9,    XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, KC_0,    KC_4,    KC_5,    KC_6,    XXXXXXX, XXXXXXX, KC_LSFT,       KC_LGUI, KC_LALT, KC_LCTL, XXXXXXX,
-    XXXXXXX, XXXXXXX, KC_1,    KC_2,    KC_3,    XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, KC_RALT, XXXXXXX, XXXXXXX,
+    XXXXXXX, KC_SCLN, KC_4,    KC_5,    KC_6,    XXXXXXX, XXXXXXX, KC_LSFT,       KC_LGUI, KC_LALT, KC_LCTL, XXXXXXX,
+    XXXXXXX, KC_0,    KC_1,    KC_2,    KC_3,    XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, KC_RALT, XXXXXXX, XXXXXXX,
     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, LT(7,KC_BSPC), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
@@ -510,12 +503,6 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case TD(TD_FUN_DEL):
             return 250;
 
-        // Lower Tapping Term for ; and ' on u and y key
-        case TD(TD_SCLN):
-        case TD(TD_QUOT):
-        case KC_SLSH:
-            return 200;
-
         default:
             return TAPPING_TERM;  // 300
     }
@@ -554,18 +541,16 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
         else return TD_SINGLE_HOLD;
     }
     if (state->count == 2) return TD_DOUBLE_TAP;
-    if (state->count == 3) return TD_TRIPPLE_TAP;
     else return TD_UNKNOWN;
 }
 
-// don't interrupt on other keypress
+// Don't interrupt on other keypress
 td_state_t cur_dance_hold(qk_tap_dance_state_t *state) {
     if (state->count == 1) {
         if (!state->pressed) return TD_SINGLE_TAP;
         else return TD_SINGLE_HOLD;
     }
     if (state->count == 2) return TD_DOUBLE_TAP;
-    if (state->count == 3) return TD_TRIPPLE_TAP;
     else return TD_UNKNOWN;
 }
 
@@ -585,7 +570,6 @@ void td_bspc_finished(qk_tap_dance_state_t *state, void *user_data) {
         case TD_SINGLE_HOLD:
             layer_on(_NUM);
             break;
-        case TD_TRIPPLE_TAP:
         case TD_UNKNOWN:
             break;
     }
@@ -617,7 +601,6 @@ void td_del_finished(qk_tap_dance_state_t *state, void *user_data) {
         case TD_SINGLE_HOLD:
             layer_on(_FUN);
             break;
-        case TD_TRIPPLE_TAP:
         case TD_UNKNOWN:
             break;
     }
@@ -629,52 +612,6 @@ void td_del_reset(qk_tap_dance_state_t *state, void *user_data) {
             layer_off(_FUN);
             break;
         default:
-            break;
-    }
-}
-
-void td_scln_finished(qk_tap_dance_state_t *state, void *user_data) {
-    td_state = cur_dance(state);
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-            tap_code(KC_COMM);
-            break;
-        case TD_DOUBLE_TAP:
-            tap_code(KC_COMM);
-            tap_code(KC_COMM);
-            break;
-        case TD_TRIPPLE_TAP:
-            tap_code(KC_COMM);
-            tap_code(KC_COMM);
-            tap_code(KC_COMM);
-            break;
-        case TD_SINGLE_HOLD:
-            tap_code(KC_SCLN);
-            break;
-        case TD_UNKNOWN:
-            break;
-    }
-}
-
-void td_quot_finished(qk_tap_dance_state_t *state, void *user_data) {
-    td_state = cur_dance(state);
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-            tap_code(KC_DOT);
-            break;
-        case TD_DOUBLE_TAP:
-            tap_code(KC_DOT);
-            tap_code(KC_DOT);
-            break;
-        case TD_TRIPPLE_TAP:
-            tap_code(KC_DOT);
-            tap_code(KC_DOT);
-            tap_code(KC_DOT);
-            break;
-        case TD_SINGLE_HOLD:
-            tap_code(KC_QUOT);
-            break;
-        case TD_UNKNOWN:
             break;
     }
 }
