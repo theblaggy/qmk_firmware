@@ -221,17 +221,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |   !  |   @  |   #  |   $  |   %  |   ^  |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |   _  |   [  |   {  |   (  |   =  |   /  |Shift | GUI  | Alt  | Ctrl |      |
+ * |      |   _  |   [  |   {  |   (  |   =  |   \  |Shift | GUI  | Alt  | Ctrl |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |   ~  |   *  |   -  |   +  |   &  |   \  |      |      | RAlt |      |      |
+ * |      |   ~  |   *  |   -  |   +  |   &  |   |  |      |      | RAlt |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_SYM] = LAYOUT_ortho_4x12(
     XXXXXXX, KC_EXLM, KC_AT,      KC_HASH,    KC_DLR,     KC_PERC, KC_CIRC,      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, KC_UNDS, TD(TD_BRC), TD(TD_CBR), TD(TD_PRN), KC_EQL,  KC_SLSH,      KC_LSFT, KC_LGUI, KC_LALT, KC_LCTL, XXXXXXX,
-    XXXXXXX, KC_TILD, KC_ASTR,    KC_MINS,    KC_PLUS,    KC_AMPR, KC_BSLS,      XXXXXXX, XXXXXXX, KC_RALT, XXXXXXX, XXXXXXX,
+    XXXXXXX, KC_UNDS, TD(TD_BRC), TD(TD_CBR), TD(TD_PRN), KC_EQL,  KC_BSLS,      KC_LSFT, KC_LGUI, KC_LALT, KC_LCTL, XXXXXXX,
+    XXXXXXX, KC_TILD, KC_ASTR,    KC_MINS,    KC_PLUS,    KC_AMPR, KC_PIPE,      XXXXXXX, XXXXXXX, KC_RALT, XXXXXXX, XXXXXXX,
     XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX, LT(8,KC_ENT), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
