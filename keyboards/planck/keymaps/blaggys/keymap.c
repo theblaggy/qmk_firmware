@@ -207,20 +207,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Number
  * ,-----------------------------------------------------------------------------------.
- * |      |   7  |   8  |   9  |      |      |      |      |      |      |      |      |
+ * |      |      |   7  |   8  |   9  |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |   4  |   5  |   6  |      |      |      |Shift | GUI  | Alt  | Ctrl |      |
+ * |      |   0  |   4  |   5  |   6  |      |      |Shift | GUI  | Alt  | Ctrl |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |   1  |   2  |   3  |      |      |      |      |      | RAlt |      |      |
+ * |      |      |   1  |   2  |   3  |      |      |      |      | RAlt |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |   0  |MO(11)|      |      |      |      |      |      |      |
+ * |      |      |      |      |MO(11)|      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_NUM] = LAYOUT_ortho_4x12(
     XXXXXXX, XXXXXXX, KC_7,    KC_8,    KC_9,    XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX, KC_4,    KC_5,    KC_6,    XXXXXXX, XXXXXXX, KC_LSFT,       KC_LGUI, KC_LALT, KC_LCTL, XXXXXXX,
+    XXXXXXX, KC_0,    KC_4,    KC_5,    KC_6,    XXXXXXX, XXXXXXX, KC_LSFT,       KC_LGUI, KC_LALT, KC_LCTL, XXXXXXX,
     XXXXXXX, XXXXXXX, KC_1,    KC_2,    KC_3,    XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, KC_RALT, XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, KC_0,    _______, XXXXXXX, XXXXXXX, LT(7,KC_BSPC), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, LT(7,KC_BSPC), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
 /* Symbol
