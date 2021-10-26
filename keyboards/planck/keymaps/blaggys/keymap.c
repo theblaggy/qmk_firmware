@@ -111,7 +111,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Colemak
  * ,-----------------------------------------------------------------------------------.
- * |      |   Q  |   W  |   F  |   P  |   B  |   J  |   L  |   U  |   Y  |   '  |      |
+ * |      |   Q  |   W  |   F  |   P  |   B  |   J  |   L  |   U  |   Y  |   '  |   ;  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |   A  |   R  |   S  |   T  |   G  |   M  |   N  |   E  |   I  |   O  | Vol+ |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -121,7 +121,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_COLEMAK] = LAYOUT_ortho_4x12(
-    XXXXXXX, KC_Q,         KC_W,         KC_F,         KC_P,         KC_B,    KC_J,    KC_L,         KC_U,         KC_Y,           KC_QUOT,      XXXXXXX,
+    XXXXXXX, KC_Q,         KC_W,         KC_F,         KC_P,         KC_B,    KC_J,    KC_L,         KC_U,         KC_Y,           KC_QUOT,      KC_SCLN,
     XXXXXXX, LCTL_T(KC_A), LALT_T(KC_R), LGUI_T(KC_S), LSFT_T(KC_T), KC_G,    KC_M,    RSFT_T(KC_N), RGUI_T(KC_E), LALT_T(KC_I),   RCTL_T(KC_O), KC_VOLU,
     XXXXXXX, KC_Z,         RALT_T(KC_X), KC_C,         KC_D,         KC_V,    KC_K,    KC_H,         KC_COMM,      RALT_T(KC_DOT), KC_SLSH,      KC_VOLD,
     _______, _______,      _______,      _______,      _______,      _______, _______, _______,      _______,      _______,        _______,      _______
@@ -203,7 +203,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |      |   7  |   8  |   9  |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |   ;  |   4  |   5  |   6  |      |      |Shift | GUI  | Alt  | Ctrl |      |
+ * |      |      |   4  |   5  |   6  |      |      |Shift | GUI  | Alt  | Ctrl |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |   0  |   1  |   2  |   3  |      |      |      |      | RAlt |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -212,7 +212,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_NUM] = LAYOUT_ortho_4x12(
     XXXXXXX, XXXXXXX, KC_7,    KC_8,    KC_9,    XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, KC_SCLN, KC_4,    KC_5,    KC_6,    XXXXXXX, XXXXXXX, KC_LSFT,       KC_LGUI, KC_LALT, KC_LCTL, XXXXXXX,
+    XXXXXXX, XXXXXXX, KC_4,    KC_5,    KC_6,    XXXXXXX, XXXXXXX, KC_LSFT,       KC_LGUI, KC_LALT, KC_LCTL, XXXXXXX,
     XXXXXXX, KC_0,    KC_1,    KC_2,    KC_3,    XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, KC_RALT, XXXXXXX, XXXXXXX,
     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, LT(7,KC_BSPC), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 ),
@@ -502,6 +502,11 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case TD(TD_NUM_BSPC):
         case TD(TD_FUN_DEL):
             return 250;
+
+        // Toprow special chars
+        case KC_QUOT:
+        case KC_SCLN:
+            return 50;
 
         default:
             return TAPPING_TERM;  // 300
