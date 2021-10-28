@@ -501,7 +501,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case LT(_SYM,KC_ENT):
         case TD(TD_NUM_BSPC):
         case TD(TD_FUN_DEL):
-            return 250;
+            return 200;
 
         // Toprow special chars
         case KC_QUOT:
