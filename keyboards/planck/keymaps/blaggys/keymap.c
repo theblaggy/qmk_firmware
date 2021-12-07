@@ -23,7 +23,8 @@ enum planck_keycodes {
   DVORAK,
   PLOVER,
   BACKLIT,
-  EXT_PLV
+  EXT_PLV,
+  MY_TEXT
 };
 
 #define NAV MO(_NAV)
@@ -121,7 +122,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_COLEMAK] = LAYOUT_ortho_4x12(
-    XXXXXXX, KC_Q,         KC_W,         KC_F,         KC_P,         KC_B,    KC_J,    KC_L,         KC_U,         KC_Y,           KC_QUOT,      KC_SCLN,
+    MY_TEXT, KC_Q,         KC_W,         KC_F,         KC_P,         KC_B,    KC_J,    KC_L,         KC_U,         KC_Y,           KC_QUOT,      KC_SCLN,
     XXXXXXX, LCTL_T(KC_A), LALT_T(KC_R), LGUI_T(KC_S), LSFT_T(KC_T), KC_G,    KC_M,    RSFT_T(KC_N), RGUI_T(KC_E), LALT_T(KC_I),   RCTL_T(KC_O), KC_VOLU,
     XXXXXXX, KC_Z,         RALT_T(KC_X), KC_C,         KC_D,         KC_V,    KC_K,    KC_H,         KC_COMM,      RALT_T(KC_DOT), KC_SLSH,      KC_VOLD,
     _______, _______,      _______,      _______,      _______,      _______, _______, _______,      _______,      _______,        _______,      _______
@@ -408,6 +409,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       return false;
+      break;
+    case MY_TEXT:
+      if (record->event.pressed) {
+        SEND_STRING("MY_TEXT");
+      }
       break;
   }
   return true;
