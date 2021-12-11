@@ -514,6 +514,19 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+bool get_custom_auto_shifted_key(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_QUOT:
+        case KC_SCLN:
+        case KC_COMM:
+        case KC_DOT:
+        case KC_SLSH:
+            return true;
+        default:
+            return false;
+    }
+}
+
 /* Return an integer that corresponds to what kind of tap dance should be executed.
  *
  * How to figure out tap dance state: interrupted and pressed.
