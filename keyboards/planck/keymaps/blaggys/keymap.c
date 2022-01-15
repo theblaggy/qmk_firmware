@@ -521,13 +521,7 @@ bool music_mask_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-
-        // Homerow Shifts
-        case LSFT_T(KC_T):
-        case RSFT_T(KC_N):
-            return 225;
-
-        // Thumb keys
+        // Thumb Keys
         case LT(_MEDIA,KC_ESC):
         case LT(_NAV,KC_SPC):
         case LT(_MOUSE,KC_TAB):
